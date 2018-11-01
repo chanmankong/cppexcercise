@@ -6,14 +6,10 @@ using namespace std;
 
 int main()
 {
-	vector<int> vec;
-	for(int i = 1; i < 10; i ++)
-		vec.push_back(i);
-	cout << vec.size() << endl;
-	cout << vec.capacity() << endl;
-	cout << vec.max_size() << endl;
-
-
+	string s;
+	s = 'a';
+	s += 'g';
+	cout << s << endl;
 	return 0;
 }
 
