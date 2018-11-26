@@ -17,21 +17,26 @@ void isok(int x)
 		cnt ++;
 		return;
 	}
+
+	if(x >= n)
+		return;
 	
-	
-	for(int row = x + 1; row < n; row++)
+	// if I put a chess in the current row, I should try every column in this row
 	for(int i = 0; i < n; i++)
 	{
-		if(b[row][i] == '#' && col[i])
+		if(b[x][i] == '#' && col[i])
 		{
 			seq++;
 			col[i] = false;
-			isok(ro);
+			isok(x + 1);
 			seq--;
 			col[i] = true;
 		}
 
 	}
+
+	// if I don't put a chess in the current row, then I try the next row
+	isok(x + 1);
 
 	return;
 }
@@ -50,23 +55,9 @@ int main()
 				b[i].push_back(c);
 			}
 
-
-		for(int i = 0; i < n; i++)
-			for(int j = 0; j < n; j++)
-			{
-				if(b[i][j] == '#')
-				{
-					seq++;
-					col[j] = false;
-					isok(i);
-					seq--;
-					col[j] = true;
-				}
-			}
-
+		isok(0);
 		cout << cnt << endl;
 
-		seq = 0;
 		cnt = 0;
 		for(int i = 0; i < n; i++)
 			b[i].clear();
