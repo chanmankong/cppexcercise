@@ -2,62 +2,76 @@
 #include <vector>
 using namespace std;
 
-class Item
-{
-	public:
-		int x, y;
-		bool flag;
+const int Max_size = 8;
+vector<vector<char> > b(Max_size);
+vector<bool> col(Max_size, true);
+int cnt = 0;
+int seq = 0;
+int n, k;
 
-		Item(int xx, int yy, bool ff):x(xx), y(yy), flag(ff){}
-};
-
-void isok(vector<vector<char> > &c, int x, int y, int seq, int k, int &cnt)
+void isok(int x)
 {
-	int next_x = x + 1, next_y1 = y - 1, next_y2 = y + 1;
 
 	if(seq == k)
 	{
 		cnt ++;
-		cout << "ok: " << x << " " << y << endl; 
 		return;
 	}
-
-	if(next_x < c.size() && next_y1 > -1 && c[next_x][next_y1] == '#')
-		isok(c, next_x, next_y1, seq + 1, k, cnt);
 	
-	if(next_x < c.size() && next_y2 < c.size() && c[next_x][next_y2] == '#')
-		isok(c, next_x, next_y2, seq + 1, k, cnt);
+	
+	for(int row = x + 1; row < n; row++)
+	for(int i = 0; i < n; i++)
+	{
+		if(b[row][i] == '#' && col[i])
+		{
+			seq++;
+			col[i] = false;
+			isok(ro);
+			seq--;
+			col[i] = true;
+		}
+
+	}
 
 	return;
 }
 
 int main()
 {
-
-	int n, k;
 	char c;
 	
 	cin >> n >> k;
 	while(n != -1 && k != -1)
 	{
-		vector<vector<char> > b(n);
-		vector<Item> li;
-
 		for(int i = 0; i < n; i++)
 			for(int j = 0; j < n; j++)
 			{
 				cin >> c;
 				b[i].push_back(c);
-				if(c == '#')
-					li.push_back(Item(i, j, false));
 			}
 
-		int cnt = 0;
 
-		for(auto it = li.begin(); it != li.end(); it++)
-			isok(b, (*it).x, (*it).y, 1, k, cnt);
+		for(int i = 0; i < n; i++)
+			for(int j = 0; j < n; j++)
+			{
+				if(b[i][j] == '#')
+				{
+					seq++;
+					col[j] = false;
+					isok(i);
+					seq--;
+					col[j] = true;
+				}
+			}
 
 		cout << cnt << endl;
+
+		seq = 0;
+		cnt = 0;
+		for(int i = 0; i < n; i++)
+			b[i].clear();
+		for(auto it = col.begin(); it != col.end(); it++)
+			*it = true;
 
 		cin >> n >> k;
 
